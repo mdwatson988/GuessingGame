@@ -18,8 +18,7 @@ def get_user_flip_choice():
         elif user_flip_input == "T" or user_flip_input == "t":
             user_flip_choice = "Tails"
             return user_flip_choice
-        else:
-            print('Sorry, invalid selection.')
+        print('Sorry, invalid selection.')
 
 
 def roll_die():
@@ -30,17 +29,17 @@ def roll_die():
 def get_user_die_choice():
     while True:
         user_die_input = input('\nChoose a number between 1 and 6. Enter your choice on your keyboard.\n')
-        while True:
-            try:
-                user_die_input_int = int(user_die_input)
-                if user_die_input_int in range(1, 7):
-                    return user_die_input_int
-                else:
-                    print('Sorry, invalid selection.')
-                    break
-            except ValueError:
+        try:
+            user_die_input_int = int(user_die_input)
+            if user_die_input_int in range(1, 7):
+                return user_die_input_int
+            else:
                 print('Sorry, invalid selection.')
                 break
+        # additional catch for inappropriate entry of non-numeric string
+        except ValueError:
+            print('Sorry, invalid selection.')
+            break
 
 
 def guessed_correctly(guess, result):
@@ -59,34 +58,34 @@ def choose_game():
         elif game_choice_input == "D" or game_choice_input == "d":
             user_game_choice = "Die"
             return user_game_choice
-        else:
-            print('Sorry, invalid selection.')
+        print('Sorry, invalid selection.')
 
 
 # Start the game
 print(
     "\n\nStep right up and test your luck! Welcome to the New and Improved Guessing Game!")
 
-# have user select game
-game_choice = choose_game()
+# Set variable to keep track of score
+num_guessed = 0
+num_correct = 0
+play_again = 0
 
-# play coin flip game
-if game_choice == "Coin":
-    print("\nYou've chosen the coin flip guessing game."
-          "\nGo ahead and make your first guess!")
+while play_again == 0:
+    # have user select game
+    game_choice = choose_game()
 
-    # Set variable to keep track of score
-    num_guessed = 0
-    num_correct = 0
-    play_again = 0
-    while play_again == 0:
+    # play coin flip game
+    if game_choice == "Coin":
+        print("\nYou've chosen the coin flip guessing game.")
+
         flip = flip_coin()
-        # Get user input
         choice = get_user_flip_choice()
+
         if choice == "Heads":
             print("You guessed Heads.")
         else:
             print("You guessed Tails.")
+
         # Inform user of result of coin flip
         if flip == "Heads":
             print("The coin came up Heads.\n")
@@ -102,27 +101,10 @@ if game_choice == "Coin":
             print("Sorry, you guessed incorrectly.")
             num_guessed += 1
 
-        # Inform users of totals
-        percent_correct: float = (num_correct / num_guessed) * 100
-        print(
-            "You've guessed {c} correctly out of a total of {g} guesses, or {p}% correct.".format(c=num_correct,
-                                                                                                  g=num_guessed,
-                                                                                                  p=percent_correct))
-        # Play again?
-        replay = input('\nWould you like to play again?\nPress "N" to stop playing or any other key to continue.\n')
-        if replay == "N" or replay == "n":
-            play_again = 1
+    # play six sided die game
+    elif game_choice == "Die":
+        print("\nYou've chosen the six sided die guessing game.")
 
-# play six sided die game
-elif game_choice == "Die":
-    print("\nYou've chosen the six sided die guessing game."
-          "\nGo ahead and make your first guess!")
-    # Set variable to keep track of score
-    num_guessed = 0
-    num_correct = 0
-    play_again = 0
-
-    while play_again == 0:
         die_result = roll_die()
         choice = get_user_die_choice()
 
@@ -145,13 +127,13 @@ elif game_choice == "Die":
             print("Sorry, you guessed incorrectly.")
             num_guessed += 1
 
-        # Inform users of totals
-        percent_correct: float = (num_correct / num_guessed) * 100
-        print(
-            "You've guessed {c} correctly out of a total of {g} guesses, or {p}% correct.".format(c=num_correct,
-                                                                                                  g=num_guessed,
-                                                                                                  p=percent_correct))
-        # Play again?
-        replay = input('\nWould you like to play again?\nPress "N" to stop playing or any other key to continue.\n')
-        if replay == "N" or replay == "n":
-            play_again = 1
+    # Inform users of totals
+    percent_correct: float = (num_correct / num_guessed) * 100
+    print(
+        "You've guessed {c} correctly out of a total of {g} guesses, or {p}% correct.".format(c=num_correct,
+                                                                                              g=num_guessed,
+                                                                                              p=percent_correct))
+    # Play again?
+    replay = input('\nWould you like to play again?\nPress "N" to stop playing or any other key to continue.\n')
+    if replay == "N" or replay == "n":
+        play_again = 1
